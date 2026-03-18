@@ -1,0 +1,30 @@
+# Environments
+.venv/
+.venv_autism/
+venv/
+ENV/
+env/
+
+# Node modules
+node_modules/
+autism-detection/backend/node_modules/
+
+# IDE files
+.vscode/
+
+# Large files/Uploads
+**/uploads/
+*.mp4
+*.mkv
+*.avi
+*.h5
+*.pth
+*.json
+!package.json
+!package-lock.json
+!behavior-model.json
+
+# Misc
+*.log
+debug.txt
+result.json

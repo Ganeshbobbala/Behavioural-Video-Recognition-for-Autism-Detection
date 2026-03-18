@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Behavioral Analysis | Autism Early Screening System</title>
+    <meta name="description" content="AI-Powered Behavioral Video Recognition for Autism Detection using Deep Learning and Computer Vision.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-content animate">
+            <span class="badge">AI-Powered Behavior Analysis</span>
+            <h1 class="hero-title">Understanding Autism Through <span>Intelligent</span> Analysis</h1>
+            <p class="hero-subtitle">Leveraging deep learning and computer vision to detect behavioral patterns — supporting early diagnosis and therapy for children on the autism spectrum.</p>
+            <div class="cta-group">
+                <a href="#analysis" class="btn btn-primary">Start Analysis <i class="fas fa-arrow-right"></i></a>
+                <a href="#care-locator" class="btn btn-outline" style="border-color: var(--primary); color: var(--primary);">Find Local Care <i class="fas fa-map-marker-alt"></i></a>
+                <a href="#methodology" class="btn btn-outline">Learn How It Works</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </header>
+
+    <!-- Methodology Section -->
+    <section id="methodology">
+        <div class="section-header">
+            <h2>Methodology</h2>
+            <p>Our system combines computer vision and deep learning to analyze behavioral patterns with precision.</p>
+        </div>
+        <div class="methodology-grid">
+            <div class="method-card">
+                <div class="method-number">1</div>
+                <h3>Video Upload</h3>
+                <p>Upload a recorded video of a child for behavioral analysis. Supports common formats like MP4, AVI, and MOV.</p>
+            </div>
+            <div class="method-card">
+                <div class="method-number">2</div>
+                <h3>AI Processing</h3>
+                <p>Frames are extracted and analyzed using MediaPipe for body/hand landmarks and facial key points in real-time.</p>
+            </div>
+            <div class="method-card">
+                <div class="method-number">3</div>
+                <h3>Pattern Detection</h3>
+                <p>Deep learning models (CNN + LSTM) identify behaviors: hand flapping, repetitive movements, and eye contact avoidance.</p>
+            </div>
+            <div class="method-card">
+                <div class="method-number">4</div>
+                <h3>Results & Insights</h3>
+                <p>View confidence levels and detailed reports for each detected behavioral pattern with timeline-based mapping.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Guidelines Section -->
+    <section id="guidelines" style="background: rgba(255,255,255,0.02); padding: 60px 0;">
+        <div class="analysis-container">
+            <div class="section-header">
+                <h2>Video Capture Instructions</h2>
+                <p>Follow these steps to ensure the highest accuracy for our AI models.</p>
+            </div>
+            <div class="methodology-grid">
+                <div class="method-card">
+                    <i class="fas fa-lightbulb" style="font-size: 2rem; color: #f59e0b; margin-bottom: 15px;"></i>
+                    <h3>Lighting</h3>
+                    <p>Ensure the room is well-lit. Avoid shadows across the face or body.</p>
+                </div>
+                <div class="method-card">
+                    <i class="fas fa-expand" style="font-size: 2rem; color: #3b82f6; margin-bottom: 15px;"></i>
+                    <h3>Full Body View</h3>
+                    <p>The child's entire body should be visible in the frame for movement detection.</p>
+                </div>
+                <div class="method-card">
+                    <i class="fas fa-stopwatch" style="font-size: 2rem; color: #ef4444; margin-bottom: 15px;"></i>
+                    <h3>Duration</h3>
+                    <p>Record at least 30-60 seconds of natural interaction or play.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Analysis Section -->
+    <section id="analysis">
+        <div class="analysis-container">
+            <div class="section-header">
+                <h2>Analysis</h2>
+                <p>Upload a video recording and our AI will analyze it for behavioral patterns.</p>
+            </div>
+
+            <div class="upload-box" id="uploadArea">
+                <input type="file" id="videoInput" accept="video/*" hidden>
+                <i class="fas fa-cloud-upload-alt"></i>
+                <h3>Upload Video for Analysis</h3>
+                <p>Drag & drop a video here</p>
+                <span>or click to browse — MP4, AVI, MOV supported</span>
+                <div style="margin-top: 24px;">
+                    <button class="btn btn-primary" id="browseBtn">Browse Files</button>
+                    <button class="btn btn-outline" id="analyzeBtn" disabled>Run AI Analysis</button>
+                </div>
+            </div>
+
+            <div id="videoSection" style="display: none; margin-bottom: 40px;">
+                <video id="video" controls style="width: 100%; max-width: 800px; border-radius: 16px; border: 1px solid var(--glass-border);"></video>
+            </div>
+
+            <div id="status" style="margin: 20px 0; font-weight: 500;"></div>
+
+            <!-- Results Dashboard -->
+            <div class="results-dashboard" id="resultsDashboard">
+                <div class="results-grid">
+                    <div class="result-card">
+                        <div class="result-header">
+                            <h4>Hand Flapping</h4>
+                            <i class="fas fa-hands-bubbles" style="color: #f59e0b;"></i>
+                        </div>
+                        <div class="value" id="handFlappingPct">0%</div>
+                        <div class="progress-bar"><div class="progress-fill" id="handFlappingBar"></div></div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-header">
+                            <h4>Repetitive Movement</h4>
+                            <i class="fas fa-sync-alt" style="color: #ef4444;"></i>
+                        </div>
+                        <div class="value" id="repetitivePct">0%</div>
+                        <div class="progress-bar"><div class="progress-fill" id="repetitiveBar"></div></div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-header">
+                            <h4>Eye Contact</h4>
+                            <i class="fas fa-eye" style="color: #3b82f6;"></i>
+                        </div>
+                        <div class="value" id="eyeContactPct">0%</div>
+                        <div class="progress-bar"><div class="progress-fill" id="eyeContactBar"></div></div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-header">
+                            <h4>Verbal Cues</h4>
+                            <i class="fas fa-comment-dots" style="color: #10b981;"></i>
+                        </div>
+                        <div class="value" id="verbalPct">0%</div>
+                        <div class="progress-bar"><div class="progress-fill" id="verbalBar"></div></div>
+                    </div>
+                </div>
+
+                <!-- Timeline Chart -->
+                <div class="chart-container" style="margin-top: 40px; background: var(--glass-bg); padding: 24px; border-radius: 16px; border: 1px solid var(--glass-border);">
+                    <h4 style="margin-bottom: 20px;"><i class="fas fa-chart-line"></i> Behavioral Timeline</h4>
+                    <canvas id="behaviorChart" height="100"></canvas>
+                </div>
+
+                <!-- Audio Insights -->
+                <div class="audio-insights" style="margin-top: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                    <div class="result-card" style="border-color: #10b981;">
+                        <div class="result-header">
+                            <h4>Speech Delay Score</h4>
+                            <i class="fas fa-microphone-alt"></i>
+                        </div>
+                        <div class="value" id="speechDelayVal">Low Risk</div>
+                        <p style="font-size: 0.8rem; color: #94a3b8;">Based on vocalization frequency</p>
+                    </div>
+                    <div class="result-card" style="border-color: #8b5cf6;">
+                        <div class="result-header">
+                            <h4>Atypical Sounds</h4>
+                            <i class="fas fa-volume-up"></i>
+                        </div>
+                        <div class="value" id="vocalCount">0</div>
+                        <p style="font-size: 0.8rem; color: #94a3b8;">Repetitive vocal patterns detected</p>
+                    </div>
+                </div>
+
+                <div style="margin-top: 40px; display: flex; gap: 15px; justify-content: center;">
+                    <button class="btn btn-primary" id="exportBtn">Download PDF Report <i class="fas fa-file-pdf"></i></button>
+                    <button class="btn btn-outline" onclick="window.location.hash='#history'">View History</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- History Section -->
+    <section id="history">
+        <div class="section-header">
+            <h2>Recent Analysis History</h2>
+        </div>
+        <div class="history-section">
+            <ul class="history-list" id="historyList">
+                <li class="history-item">Loading history...</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Care Locator Section -->
+    <section id="care-locator">
+        <div class="section-header">
+            <h2>Find Specialist Care</h2>
+            <p>Locate nearby autism specialists, hospitals, and therapy centers with turn-by-turn directions.</p>
+        </div>
+        <div class="care-container" style="background: var(--bg-card); border-radius: 24px; border: 1px solid var(--glass-border); overflow: hidden; display: flex; flex-direction: column;">
+            <div style="padding: 20px; border-bottom: 1px solid var(--glass-border); display: flex; justify-content: space-between; align-items: center;">
+                <div id="location-status" style="font-size: 0.9rem; color: var(--text-muted);"><i class="fas fa-map-marker-alt"></i> Location not detected</div>
+                <button class="btn btn-primary" id="detectLocBtn" style="padding: 8px 16px; font-size: 0.85rem;">Detect My Location</button>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 350px; height: 500px;" id="locator-grid">
+                <div id="map" style="height: 100%; border-right: 1px solid var(--glass-border);"></div>
+                <div id="doctorList" style="height: 100%; overflow-y: auto; background: rgba(15, 23, 42, 0.4); padding: 10px;">
+                    <div class="empty-list" style="text-align: center; padding: 40px 20px; color: var(--text-muted);">
+                        <i class="fas fa-hospital" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                        <p>Click "Detect My Location" to find nearby specialists</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resources Section -->
+    <section id="resources" style="padding: 60px 0; border-top: 1px solid var(--glass-border);">
+        <div class="analysis-container">
+            <div class="section-header">
+                <h2>Local Resources & Support</h2>
+                <p>Connecting you with professional support in your region.</p>
+            </div>
+            <div class="methodology-grid">
+                <div class="method-card">
+                    <h3>Autism Societies</h3>
+                    <ul style="list-style: none; padding: 0; color: #94a3b8;">
+                        <li>• National Autism Society</li>
+                        <li>• Regional Support Groups</li>
+                    </ul>
+                </div>
+                <div class="method-card">
+                    <h3>Diagnostic Centers</h3>
+                    <ul style="list-style: none; padding: 0; color: #94a3b8;">
+                        <li>• City Children's Hospital</li>
+                        <li>• Early Intervention Clinics</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack / Footer -->
+    <footer class="footer-info">
+        <div class="section-header">
+            <h3>Deep Learning-Based Behavioural Video Recognition for Autism Detection</h3>
+            <p style="max-width: 800px; margin: 16px auto;">A robust end-to-end system utilizing CNN and LSTM architectures with pose estimation for capturing spatial and temporal behavioral patterns.</p>
+        </div>
+        <div class="tech-grid">
+            <span class="tech-tag">Python</span>
+            <span class="tech-tag">TensorFlow/Keras</span>
+            <span class="tech-tag">OpenCV</span>
+            <span class="tech-tag">Media Pipe</span>
+            <span class="tech-tag">CNN</span>
+            <span class="tech-tag">LSTM</span>
+            <span class="tech-tag">HTML</span>
+            <span class="tech-tag">CSS</span>
+            <span class="tech-tag">JavaScript</span>
+            <span class="tech-tag">Node.js</span>
+            <span class="tech-tag">MongoDB</span>
+        </div>
+        <p style="text-align: center; margin-top: 60px; color: var(--text-muted); font-size: 0.9rem;">&copy; 2026 Autism Early Screening System. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
