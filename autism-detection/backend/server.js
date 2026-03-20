@@ -8,10 +8,11 @@ const PDFDocument = require('pdfkit');
 const { analyzeVideo } = require('./routes/analysis');
 
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 // MongoDB connection
-mongoose.connect('mongodb://localhost:27017/autismdb')
+const MONGO_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/autismdb';
+mongoose.connect(MONGO_URI)
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB error:', err));
 

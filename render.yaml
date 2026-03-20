@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: autism-detection-app
+    env: docker
+    dockerfilePath: Dockerfile
+    plan: free
+    envVars:
+      - key: PORT
+        value: 3001
+      - key: MONGODB_URI
+        value: '' # To be filled in the Render dashboard (Use MongoDB Atlas)
