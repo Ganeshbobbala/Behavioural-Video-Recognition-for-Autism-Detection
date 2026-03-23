@@ -680,6 +680,73 @@ section {
     overflow-y: auto;
 }
 
+/* Doctor Cards */
+.doctor-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 24px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    transition: 0.3s all ease;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.doctor-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--primary);
+    transform: translateX(10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.doctor-type {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--primary);
+    background: rgba(249, 115, 22, 0.15);
+    padding: 4px 10px;
+    border-radius: 50px;
+    align-self: flex-start;
+}
+
+.doctor-card h4 {
+    font-size: 1.25rem;
+    color: var(--text-main);
+    margin-bottom: 0px;
+}
+
+.doctor-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.doctor-info i {
+    color: var(--accent-blue);
+    width: 16px;
+    text-align: center;
+}
+
+.doctor-action {
+    margin-top: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.3s;
+}
+
+.doctor-card:hover .doctor-action {
+    gap: 12px;
+}
+
 /* History Container */
 .history-container {
     background: var(--bg-card);

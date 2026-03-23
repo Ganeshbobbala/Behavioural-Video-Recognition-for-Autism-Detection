@@ -28,3 +28,4 @@ autism-detection/backend/node_modules/
 *.log
 debug.txt
 result.json
+.env

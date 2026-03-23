@@ -329,12 +329,22 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await res.json();
             const results = data.elements.slice(0, 8);
             
-            doctorList.innerHTML = results.map(el => `
+            doctorList.innerHTML = results.map(el => {
+                const name = el.tags.name || 'Medical Center';
+                const type = (el.tags.amenity || 'Clinic').toUpperCase();
+                const phone = el.tags.phone || el.tags['contact:phone'] || 'Phone number not listed';
+                const address = [el.tags['addr:street'], el.tags['addr:city'], el.tags['addr:district']].filter(Boolean).join(', ') || 'View exact location on map';
+                
+                return `
                 <div class="doctor-card" onclick="window.open('https://www.google.com/maps/dir/?api=1&destination=${el.lat || el.center.lat},${el.lon || el.center.lon}')">
-                    <h4>${el.tags.name || 'Medical Center'}</h4>
-                    <p>${el.tags.amenity.toUpperCase()} • Nearby</p>
+                    <div class="doctor-type">${type}</div>
+                    <h4>${name}</h4>
+                    <div class="doctor-info"><i class="fas fa-map-marker-alt"></i> <span>${address}</span></div>
+                    <div class="doctor-info"><i class="fas fa-phone-alt"></i> <span>${phone}</span></div>
+                    <div class="doctor-action">Get Directions <i class="fas fa-arrow-right"></i></div>
                 </div>
-            `).join('') || '<p>No centers found nearby.</p>';
+                `;
+            }).join('') || '<p>No centers found nearby.</p>';
         } catch (e) {
             doctorList.innerHTML = '<p>Error fetching specialist data.</p>';
         }

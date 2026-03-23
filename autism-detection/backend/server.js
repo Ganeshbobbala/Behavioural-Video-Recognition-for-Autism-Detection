@@ -1,7 +1,8 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const multer = require('multer');
-const mongoose = require('mongoose');
+const { createClient } = require('@supabase/supabase-js');
 const path = require('path');
 const fs = require('fs');
 const PDFDocument = require('pdfkit');
@@ -10,19 +11,10 @@ const { analyzeVideo } = require('./routes/analysis');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// MongoDB connection
-const MONGO_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/autismdb';
-mongoose.connect(MONGO_URI)
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.error('MongoDB error:', err));
-
-// Analysis Schema
-const analysisSchema = new mongoose.Schema({
-  filename: String,
-  results: Object,
-  timestamp: { type: Date, default: Date.now }
-});
-const Analysis = mongoose.model('Analysis', analysisSchema);
+// Supabase connection
+const SUPABASE_URL = process.env.SUPABASE_URL || '';
+const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY || '';
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // Ensure uploads dir
 const uploadsDir = path.join(__dirname, '..', 'uploads');
@@ -50,23 +42,38 @@ const upload = multer({ storage });
 app.post('/analyze', upload.single('video'), async (req, res) => {
   try {
     const results = await analyzeVideo(req.file.path);
-    const analysis = new Analysis({
-      filename: req.file.originalname,
-      results
-    });
-    const saved = await analysis.save();
-    res.json({ ...results, _id: saved._id });
+    const { data: saved, error: dbError } = await supabase
+      .from('analyses')
+      .insert([
+        { filename: req.file.originalname, results: results }
+      ])
+      .select()
+      .single();
+
+    if (dbError) throw dbError;
+
+    res.json({ ...results, _id: saved.id });
   } catch (error) {
     console.error('Analysis error:', error);
-    fs.appendFileSync('error.log', `${new Date().toISOString()} - ${error.stack}\n`);
-    res.status(500).json({ error: error.message });
+    const errLog = error.stack || JSON.stringify(error);
+    fs.appendFileSync('error.log', `${new Date().toISOString()} - ${errLog}\n`);
+    res.status(500).json({ error: error.message || error });
   }
 });
 
 app.get('/history', async (req, res) => {
   try {
-    const analyses = await Analysis.find().sort({ timestamp: -1 }).limit(10);
-    res.json(analyses);
+    const { data: analyses, error: dbError } = await supabase
+      .from('analyses')
+      .select('*')
+      .order('timestamp', { ascending: false })
+      .limit(10);
+
+    if (dbError) throw dbError;
+    
+    // Map _id property to maintain frontend compatibility
+    const mappedAnalyses = analyses.map(a => ({ ...a, _id: a.id }));
+    res.json(mappedAnalyses);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -74,8 +81,13 @@ app.get('/history', async (req, res) => {
 
 app.get('/report/:id', async (req, res) => {
     try {
-        const analysis = await Analysis.findById(req.params.id);
-        if (!analysis) return res.status(404).send('Not found');
+        const { data: analysis, error: dbError } = await supabase
+          .from('analyses')
+          .select('*')
+          .eq('id', req.params.id)
+          .single();
+
+        if (dbError || !analysis) return res.status(404).send('Not found');
 
         const doc = new PDFDocument();
         res.setHeader('Content-Type', 'application/pdf');
@@ -113,6 +125,6 @@ app.get('/report/:id', async (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
-  console.log('MongoDB Autism Detection app ready!');
+  console.log('Supabase Autism Detection app ready!');
 });
 
