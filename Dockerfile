@@ -1,14 +1,11 @@
 # Use an official Python runtime with Node.js installed
 FROM python:3.10-slim
 
-# Install system dependencies including Node.js and required libraries for OpenCV/MediaPipe
+# Install system dependencies including Node.js (Upgraded to v20 for stability)
 RUN apt-get update && apt-get install -y \
     curl \
     ffmpeg \
-    libsm6 \
-    libxext6 \
-    libgl1-mesa-glx \
-    && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
