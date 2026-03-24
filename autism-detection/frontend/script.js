@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const webcamStatus = document.getElementById('webcamStatus');
     const webcamPlaceholder = document.querySelector('.webcam-placeholder');
 
-    const BACKEND_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:3001' : '';
+    const BACKEND_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:3001' : 'https://autism-detection-app.onrender.com';
     let currentUploadFile = null;
     let currentAnalysisId = null;
     let behaviorChart = null;
