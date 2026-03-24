@@ -8,6 +8,6 @@ services:
       - key: PORT
         value: 3001
       - key: SUPABASE_URL
-        value: '' # To be filled in the Render dashboard (Supabase URL)
+        value: 'https://ewwcnhibkxjonyvotwds.supabase.co'
       - key: SUPABASE_ANON_KEY
-        value: '' # To be filled in the Render dashboard (Supabase Anon Key)
+        value: 'sb_publishable_lJPGe5YFMG5mzD3HFv8IPQ_Jxsx8rUz'
