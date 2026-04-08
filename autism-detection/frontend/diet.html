@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroCare | AI Diet Recommendation for ASD</title>
+    <meta name="description" content="Personalized AI-based diet recommendations for individuals with Autism Spectrum Disorder to support brain health and behavior regulation.">
+    
+    <!-- Premium Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css"> <!-- Fallback to main style -->
+    <link rel="stylesheet" href="diet.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="dark-theme">
+    <!-- Ambient Background Elements -->
+    <div class="ambient-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar glass-effect">
+        <div class="nav-content">
+            <div class="logo">
+                <i class="fa-solid fa-brain"></i>
+                <span class="gradient-text">NeuroCare</span>
+            </div>
+            <div class="nav-links">
+                <a href="index.html" class="nav-item">
+                    <i class="fa-solid fa-video"></i> Video Analysis
+                </a>
+                <a href="diet.html" class="nav-item active">
+                    <i class="fa-solid fa-utensils"></i> Diet Planner
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- Header Section -->
+        <header class="hero-section text-center fade-in-up">
+            <h1 class="title">Intelligent <span class="gradient-text">Nutritional Guidance</span> for ASD</h1>
+            <p class="subtitle">Empowering behavior regulation, brain function, and gut health through personalized, science-backed dietary recommendations.</p>
+        </header>
+
+        <div class="diet-layout">
+            <!-- Input Form Section -->
+            <section class="input-panel glass-card slide-in-left">
+                <div class="card-header">
+                    <i class="fa-solid fa-sliders"></i>
+                    <h2>Personalize Your Plan</h2>
+                </div>
+                
+                <form id="dietForm" class="diet-form">
+                    <div class="form-group slide-up-stagger">
+                        <label for="ageGroup"><i class="fa-solid fa-user-circle"></i> Age Group</label>
+                        <select id="ageGroup" required class="premium-input">
+                            <option value="">Select age group...</option>
+                            <option value="child">Child (3-12 years)</option>
+                            <option value="teen">Teen (13-18 years)</option>
+                            <option value="adult">Adult (19+ years)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group slide-up-stagger" style="animation-delay: 0.1s;">
+                        <label for="preference"><i class="fa-solid fa-leaf"></i> Dietary Preference</label>
+                        <select id="preference" required class="premium-input">
+                            <option value="">Select diet type...</option>
+                            <option value="veg">Vegetarian</option>
+                            <option value="nonveg">Non-Vegetarian</option>
+                            <option value="vegan">Vegan</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group slide-up-stagger" style="animation-delay: 0.2s;">
+                        <label><i class="fa-solid fa-triangle-exclamation"></i> Sensitivities & Restrictions</label>
+                        <div class="checkbox-grid">
+                            <label class="custom-checkbox">
+                                <input type="checkbox" value="gluten">
+                                <span class="checkbox-box"></span>
+                                <span>Gluten-Free</span>
+                            </label>
+                            <label class="custom-checkbox">
+                                <input type="checkbox" value="casein" checked>
+                                <span class="checkbox-box"></span>
+                                <span>Casein/Dairy-Free</span>
+                            </label>
+                            <label class="custom-checkbox">
+                                <input type="checkbox" value="additives" checked>
+                                <span class="checkbox-box"></span>
+                                <span>No Art. Additives</span>
+                            </label>
+                            <label class="custom-checkbox">
+                                <input type="checkbox" value="sugar" checked>
+                                <span class="checkbox-box"></span>
+                                <span>Low Sugar</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary pulse-btn w-full">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> Generate Diet Plan
+                    </button>
+                </form>
+            </section>
+
+            <!-- Results Section -->
+            <section id="resultsPanel" class="results-panel hidden fade-in">
+                <!-- Generated content will appear here via JS -->
+            </section>
+        </div>
+    </main>
+
+    <script src="diet.js"></script>
+</body>
+</html>

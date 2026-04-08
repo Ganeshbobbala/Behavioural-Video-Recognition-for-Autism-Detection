@@ -111,11 +111,70 @@ app.get('/report/:id', async (req, res) => {
         doc.moveDown();
         doc.fontSize(16).text('Audio Insights:');
         doc.fontSize(12).moveDown(0.5);
-        doc.text(`Speech Delay Score: ${analysis.results.audioAnalysis.speechDelayScore}%`);
-        doc.text(`Atypical Vocalizations: ${analysis.results.audioAnalysis.atypicalVocalizations}`);
+        if (analysis.results.audioAnalysis) {
+            doc.text(`Speech Delay Score: ${analysis.results.audioAnalysis.speechDelayScore}%`);
+            doc.text(`Atypical Vocalizations (Count): ${analysis.results.audioAnalysis.atypicalVocalizations}`);
+        } else {
+            doc.text(`No audio insights computed.`);
+        }
 
-        doc.moveDown(2);
-        doc.fontSize(10).text('Disclaimer: This is an AI-generated report intended for screening assistance and should not be used as a definitive medical diagnosis. Please consult a professional clinician.', { color: 'grey' });
+        // Post-Analysis Health & Diet Recommendation
+        doc.addPage();
+        doc.fontSize(18).text('Health & Diet Recommendations', { underline: true, align: 'center' });
+        doc.moveDown(1.5);
+        
+        doc.fontSize(14).text('1. Health Guidance', { underline: true });
+        doc.fontSize(10).moveDown(0.5);
+        doc.text('Important Clinical Context: Autism Spectrum Disorder is a neurodevelopmental condition, not a curable disease. The goal of this guidance is to support brain health, regulate behavior, and improve daily functioning.');
+        doc.moveDown();
+        doc.text('Recommended Therapies:', { underline: true });
+        doc.list([
+            'Speech & Language Therapy (if vocal delays detected)',
+            'Occupational Therapy (managing sensory inputs & fine motor skills)',
+            'Behavioral Therapy (e.g., ABA / CBT to assist daily functioning)'
+        ]);
+        
+        doc.moveDown(1.5);
+        doc.fontSize(14).text('2. Recommended Foods (Brain & Gut Health)', { underline: true });
+        doc.fontSize(10).moveDown(0.5);
+        doc.list([
+            'Brain-Support (Omega-3): Fish, walnuts, flax seeds',
+            'Fruits: Banana, apple, blueberries, orange, papaya, avocado',
+            'Vegetables: Spinach, broccoli, carrot',
+            'Protein: Eggs, lentils, chicken',
+            'Gut Health: Yogurt, fermented foods (idli, dosa)'
+        ]);
+        
+        doc.moveDown(1.5);
+        doc.fontSize(14).text('3. Foods to Limit', { underline: true });
+        doc.fontSize(10).moveDown(0.5);
+        doc.list([
+            'Processed Foods & Preservatives',
+            'Sugary Snacks & Refined Carbs',
+            'Artificial Colors and Additives',
+            'Gluten or Dairy (restrict only if individual sensitivity/allergies are clearly detected)'
+        ]);
+        
+        doc.moveDown(1.5);
+        doc.fontSize(14).text('4. Sample Daily Meal Plan', { underline: true });
+        doc.fontSize(10).moveDown(0.5);
+        doc.text('Breakfast: Healthy + easily digestible (e.g., idli, fresh fruit, or yogurt)');
+        doc.text('Lunch: Balanced meal covering core macros (rice/quinoa + steamed vegetables + protein source)');
+        doc.text('Snacks: Whole fruits, mixed nuts (if no allergy), or seeds');
+        doc.text('Dinner: Light, nutritious, and warming (e.g., vegetable soup or lean protein with greens)');
+        
+        doc.moveDown(1.5);
+        doc.fontSize(14).text('5. Lifestyle Recommendations', { underline: true });
+        doc.fontSize(10).moveDown(0.5);
+        doc.list([
+            'Maintain a structured daily routine to provide security and predictability.',
+            'Reduce sensory overload (avoid extreme noise, chaotic environments, or harsh lights).',
+            'Encourage social interaction gradually, avoiding forced prolonged exposure.',
+            'Monitor progress regularly and adjust approach based on the individual\'s comfort.'
+        ]);
+
+        doc.moveDown(3);
+        doc.fontSize(9).text('Disclaimer: This is an AI-generated report intended for screening assistance and should not be used as a definitive medical diagnosis. Please consult a professional clinician.', { color: 'grey', align: 'center' });
 
         doc.end();
     } catch (error) {

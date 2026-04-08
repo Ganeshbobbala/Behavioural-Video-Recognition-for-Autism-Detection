@@ -26,6 +26,7 @@
             <ul class="nav-links">
                 <li><a href="#methodology">Methodology</a></li>
                 <li><a href="#analysis">Analysis</a></li>
+                <li><a href="diet.html">Diet Planner</a></li>
                 <li><a href="#care-locator">Care Locator</a></li>
                 <li><a href="#history">History</a></li>
             </ul>
@@ -184,7 +185,30 @@
                         <div class="confidence-label">Speech Pattern</div>
                     </div>
                 </div>
+                </div>
 
+                <!-- Detailed Audio NLP Insights -->
+                <div id="audioInsightsPanel" class="audio-nlp-panel glass-panel" style="margin-top: 1.5rem; display: none;">
+                    <h4 style="margin-bottom: 1rem; color: var(--text-muted);"><i class="fas fa-microphone-lines"></i> Audio & Speech NLP Insights</h4>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+                        <div>
+                            <span style="font-size: 0.9rem; color: var(--text-muted);">Vocal Tone/Frequency</span>
+                            <div class="value" id="vocalFrequencyVal" style="font-size: 1.2rem; margin-top: 0.3rem;">-</div>
+                        </div>
+                        <div>
+                            <span style="font-size: 0.9rem; color: var(--text-muted);">Atypical Vocalizations</span>
+                            <div class="value" id="atypicalVocalsVal" style="font-size: 1.2rem; margin-top: 0.3rem;">-</div>
+                        </div>
+                        <div>
+                            <span style="font-size: 0.9rem; color: var(--text-muted);">Speech Delay Factor</span>
+                            <div class="value" id="speechDelayVal" style="font-size: 1.2rem; margin-top: 0.3rem;">-</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="postAnalysisReport" class="post-analysis-report glass-panel" style="margin-top: 2rem; display: none; margin-bottom: 2rem;">
+                    <!-- Report will be injected here by script.js -->
+                </div>
             </div>
         </div>
     </section>
@@ -219,12 +243,21 @@
             <span class="section-tag">Archives</span>
             <h2>Analysis History</h2>
         </div>
-        <div class="history-container">
-            <div class="history-list" id="historyList">
-                <div class="history-loading">
-                    <i class="fas fa-circle-notch fa-spin"></i>
-                </div>
-            </div>
+        <div class="history-container glass-panel" style="padding: 2rem; max-width: 1000px; margin: 0 auto; border-radius: 12px; overflow-x: auto; background: var(--surface-light);">
+            <table style="width: 100%; border-collapse: collapse; text-align: left; color: var(--text);">
+                <thead>
+                    <tr style="border-bottom: 2px solid rgba(255,255,255,0.1); color: var(--text-muted);">
+                        <th style="padding: 1rem;">Date</th>
+                        <th style="padding: 1rem;">Video File</th>
+                        <th style="padding: 1rem;">Calculated Severity</th>
+                        <th style="padding: 1rem;">Speech Delay</th>
+                        <th style="padding: 1rem;">Diet / Action</th>
+                    </tr>
+                </thead>
+                <tbody id="historyList">
+                    <tr><td colspan="5" style="text-align:center; padding: 2rem;"><i class="fas fa-circle-notch fa-spin"></i> Fetching Database Records...</td></tr>
+                </tbody>
+            </table>
         </div>
     </section>
 
