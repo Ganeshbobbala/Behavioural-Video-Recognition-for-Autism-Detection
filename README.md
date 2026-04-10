@@ -1,65 +1,110 @@
-﻿# Behavioural Video Recognition for Autism Detection
+# 🧠 AutismScan AI: Behavioural Video Recognition System
 
-A modern web application for detecting behavioral signs of autism in videos using AI-powered analysis.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node.js](https://img.shields.io/badge/Node.js-v18.x-green.svg)](https://nodejs.org/)
+[![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://www.python.org/)
+[![Supabase](https://img.shields.io/badge/Database-Supabase-FFEFD5.svg)](https://supabase.com/)
 
-## 🚀 Features
+An advanced, AI-powered behavioral analysis platform designed for early autism screening. By leveraging state-of-the-art Computer Vision (MediaPipe) and Deep Learning, this system identifies key behavioral patterns in children to assist clinicians and parents in early detection and intervention planning.
 
-- **Video Upload**: Securely upload video files for behavior analysis.
-- **AI Analysis**: Backend processing using Python and machine learning models to identify autism-related behavioral patterns.
-- **Real-time Results**: Get visual and text-based analysis results directly in your browser.
-- **Premium UI**: Sleek, modern design with a glassmorphism aesthetic.
+---
+
+## ✨ Key Features
+
+### 🔍 Dual Analysis Modes
+- **Video Upload**: Batch process recorded videos for in-depth behavioral mapping.
+- **Live Webcam Analysis**: Real-time screening using MediaPipe Pose and FaceMesh for immediate feedback on hand-flapping, eye avoidance, and repetitive movements.
+
+### 📄 Clinical Reporting
+- **PDF Report Generation**: Automatically generate comprehensive analysis reports containing severity scores and timeline-based insights.
+- **Expert Recommendations**: Every report includes personalized health guidance, dietary suggestions (Gastro-friendly, Neuro-nutrient focused), and lifestyle adjustments.
+
+### 🍱 Personalized Diet Planner
+- **Neuro-Nutrient Logic**: A dedicated system to generate diet plans based on age and dietary preferences (Veg, Vegan, Non-Veg).
+- **Targeted Restrictions**: Filter foods based on gluten, casein, or additive sensitivities commonly associated with ASD.
+
+### 📍 Care Locator
+- **Geo-Mapping**: Integrated Leaflet.js map to detect your location and find nearby autism specialists, hospitals, and therapy centers.
+
+### 🗄️ Secure Data Persistence
+- Built with **Supabase**, ensuring all analysis history is stored securely and is easily accessible for tracking progress over time.
+
+---
 
 ## 🛠️ Tech Stack
 
-- **Frontend**: HTML5, Vanilla CSS, JavaScript
-- **Backend (API)**: Node.js, Express
-- **Analysis Engine**: Python, TensorFlow
-- **Dataset/Models**: Behavioral datasets and JSON-based model configurations
+### Frontend
+- **Vanilla JS & HTML5**: High-performance, low-latency UI.
+- **Modern CSS**: Premium glassmorphism aesthetic with responsive layouts.
+- **MediaPipe**: Client-side ML for real-time body tracking.
+- **Leaflet.js**: Dynamic mapping for the Care Locator.
+
+### Backend
+- **Node.js & Express**: Scalable API handling file uploads and report generation.
+- **Python (AI Engine)**: TensorFlow-based analysis for behavioral recognition.
+- **PDFKit**: Server-side engine for high-quality clinical report generation.
+- **Supabase**: PostgreSQL database with real-time capabilities.
+
+---
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-
-- [Node.js](https://nodejs.org/) (latest LTS)
-- [Python 3.x](https://www.python.org/)
-- npm or yarn
+- Node.js (v18+)
+- Python (3.9+)
+- Supabase Account (for database features)
 
 ### Installation
 
-1.  **Clone the repository**:
-    `ash
-    git clone https://github.com/Ganeshbobbala/Behavioural-Video-Recognition-for-Autism-Detection.git
-    cd Behavioural-Video-Recognition-for-Autism-Detection
-    `
+1. **Clone the Repo**
+   ```bash
+   git clone https://github.com/Ganeshbobbala/Behavioural-Video-Recognition-for-Autism-Detection.git
+   cd Behavioural-Video-Recognition-for-Autism-Detection
+   ```
 
-2.  **Install Backend dependencies**:
-    `ash
-    cd autism-detection/backend
-    npm install
-    `
+2. **Environment Setup**
+   Create a `.env` file in `autism-detection/backend/`:
+   ```env
+   SUPABASE_URL=your_supabase_url
+   SUPABASE_ANON_KEY=your_supabase_anon_key
+   PORT=3001
+   ```
 
-3.  **Install Python dependencies**:
-    `ash
-    pip install -r requirements.txt
-    `
+3. **Install Dependencies**
+   ```bash
+   # Backend
+   cd autism-detection/backend
+   npm install
 
-### Running the Application
+   # Python Engine
+   pip install -r requirements.txt
+   ```
 
-Use the provided batch script to launch both the backend and frontend:
-
-`powershell
+### Running Locally
+Use the integrated startup script:
+```powershell
 ./run_project.bat
-`
+```
+The app will be live at `http://localhost:3001`.
 
-The application will be accessible at http://localhost:3000.
+---
 
 ## 📁 Project Structure
+```text
+├── autism-detection
+│   ├── backend          # Express API, Supabase logic, PDF generation
+│   ├── frontend         # HTML/CSS/JS (Diet Planner, Care Locator)
+│   ├── models           # AI Model weights and configurations
+│   └── uploads          # Temporary video storage
+├── Dockerfile           # Backend containerization
+├── netlify.toml         # Frontend deployment config
+└── render.yaml          # Backend deployment (Render.com)
+```
 
-- autism-detection/frontend/: All frontend code.
-- autism-detection/backend/: Express server logic and python scripts.
-- autism-detection/models/: AI model configurations.
-- autism-detection/uploads/: Temporary storage for uploaded videos.
+---
 
 ## 📝 License
+Distributed under the MIT License. See `LICENSE` for more information.
 
-This project is licensed under the MIT License.
+---
+*Disclaimer: This tool is intended for screening assistance and educational purposes. It does not provide a definitive medical diagnosis. Always consult a professional clinician.*
