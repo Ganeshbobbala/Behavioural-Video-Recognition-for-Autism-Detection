@@ -39,6 +39,25 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
+app.post('/save-live', async (req, res) => {
+  try {
+    const results = req.body;
+    const { data: saved, error: dbError } = await supabase
+      .from('analyses')
+      .insert([
+        { filename: 'Live Webcam Analysis', results: results }
+      ])
+      .select()
+      .single();
+
+    if (dbError) throw dbError;
+    res.json({ _id: saved.id });
+  } catch (error) {
+    console.error('Save live error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 app.post('/analyze', upload.single('video'), async (req, res) => {
   try {
     const results = await analyzeVideo(req.file.path);
@@ -120,61 +139,62 @@ app.get('/report/:id', async (req, res) => {
 
         // Post-Analysis Health & Diet Recommendation
         doc.addPage();
-        doc.fontSize(18).text('Health & Diet Recommendations', { underline: true, align: 'center' });
-        doc.moveDown(1.5);
+        doc.fontSize(18).fillColor('#2563eb').text('Health & Diet Recommendations', { underline: true, align: 'center' });
+        doc.moveDown(1.5).fillColor('black');
         
         doc.fontSize(14).text('1. Health Guidance', { underline: true });
         doc.fontSize(10).moveDown(0.5);
         doc.text('Important Clinical Context: Autism Spectrum Disorder is a neurodevelopmental condition, not a curable disease. The goal of this guidance is to support brain health, regulate behavior, and improve daily functioning.');
         doc.moveDown();
         doc.text('Recommended Therapies:', { underline: true });
-        doc.list([
+        doc.moveDown(0.5);
+        [
             'Speech & Language Therapy (if vocal delays detected)',
             'Occupational Therapy (managing sensory inputs & fine motor skills)',
             'Behavioral Therapy (e.g., ABA / CBT to assist daily functioning)'
-        ]);
+        ].forEach(item => doc.text(`• ${item}`, { indent: 20 }));
         
         doc.moveDown(1.5);
         doc.fontSize(14).text('2. Recommended Foods (Brain & Gut Health)', { underline: true });
         doc.fontSize(10).moveDown(0.5);
-        doc.list([
+        [
             'Brain-Support (Omega-3): Fish, walnuts, flax seeds',
             'Fruits: Banana, apple, blueberries, orange, papaya, avocado',
             'Vegetables: Spinach, broccoli, carrot',
             'Protein: Eggs, lentils, chicken',
             'Gut Health: Yogurt, fermented foods (idli, dosa)'
-        ]);
+        ].forEach(item => doc.text(`• ${item}`, { indent: 20 }));
         
         doc.moveDown(1.5);
         doc.fontSize(14).text('3. Foods to Limit', { underline: true });
         doc.fontSize(10).moveDown(0.5);
-        doc.list([
+        [
             'Processed Foods & Preservatives',
             'Sugary Snacks & Refined Carbs',
             'Artificial Colors and Additives',
             'Gluten or Dairy (restrict only if individual sensitivity/allergies are clearly detected)'
-        ]);
+        ].forEach(item => doc.text(`• ${item}`, { indent: 20 }));
         
         doc.moveDown(1.5);
         doc.fontSize(14).text('4. Sample Daily Meal Plan', { underline: true });
         doc.fontSize(10).moveDown(0.5);
-        doc.text('Breakfast: Healthy + easily digestible (e.g., idli, fresh fruit, or yogurt)');
-        doc.text('Lunch: Balanced meal covering core macros (rice/quinoa + steamed vegetables + protein source)');
-        doc.text('Snacks: Whole fruits, mixed nuts (if no allergy), or seeds');
-        doc.text('Dinner: Light, nutritious, and warming (e.g., vegetable soup or lean protein with greens)');
+        doc.text('• Breakfast: Healthy + easily digestible (e.g., idli, fresh fruit, or yogurt)', { indent: 20 });
+        doc.text('• Lunch: Balanced meal covering core macros (rice/quinoa + steamed vegetables + protein source)', { indent: 20 });
+        doc.text('• Snacks: Whole fruits, mixed nuts (if no allergy), or seeds', { indent: 20 });
+        doc.text('• Dinner: Light, nutritious, and warming (e.g., vegetable soup or lean protein with greens)', { indent: 20 });
         
         doc.moveDown(1.5);
         doc.fontSize(14).text('5. Lifestyle Recommendations', { underline: true });
         doc.fontSize(10).moveDown(0.5);
-        doc.list([
+        [
             'Maintain a structured daily routine to provide security and predictability.',
             'Reduce sensory overload (avoid extreme noise, chaotic environments, or harsh lights).',
             'Encourage social interaction gradually, avoiding forced prolonged exposure.',
             'Monitor progress regularly and adjust approach based on the individual\'s comfort.'
-        ]);
+        ].forEach(item => doc.text(`• ${item}`, { indent: 20 }));
 
         doc.moveDown(3);
-        doc.fontSize(9).text('Disclaimer: This is an AI-generated report intended for screening assistance and should not be used as a definitive medical diagnosis. Please consult a professional clinician.', { color: 'grey', align: 'center' });
+        doc.fontSize(9).fillColor('grey').text('Disclaimer: This is an AI-generated report intended for screening assistance and should not be used as a definitive medical diagnosis. Please consult a professional clinician.', { align: 'center' });
 
         doc.end();
     } catch (error) {

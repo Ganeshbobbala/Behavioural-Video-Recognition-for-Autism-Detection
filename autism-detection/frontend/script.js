@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentUploadFile = null;
     let currentAnalysisId = null;
     let behaviorChart = null;
+    let lastLiveResults = null; 
 
     // --- Tab Switching ---
     tabBtns.forEach(btn => {
@@ -269,6 +270,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Results Rendering ---
     function displayResults(results) {
         resultsDashboard.style.display = 'block';
+        
+        // Store for live report generation if needed
+        if (isWebcamRunning) {
+            lastLiveResults = results;
+            currentAnalysisId = null; // Reset ID for new live session
+        }
         
         const metrics = ['handFlapping', 'repetitive', 'eyeContact', 'verbal'];
         metrics.forEach(id => {
@@ -543,11 +550,35 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    exportBtn.addEventListener('click', () => {
+    exportBtn.addEventListener('click', async () => {
         if (currentAnalysisId) {
             window.location.href = `${BACKEND_URL}/report/${currentAnalysisId}`;
+        } else if (lastLiveResults) {
+            // No ID yet, save the live results first
+            exportBtn.disabled = true;
+            exportBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Saving...';
+            
+            try {
+                const response = await fetch(`${BACKEND_URL}/save-live`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(lastLiveResults)
+                });
+                
+                if (!response.ok) throw new Error('Save failed');
+                
+                const data = await response.json();
+                currentAnalysisId = data._id;
+                loadHistory(); // Refresh history list
+                window.location.href = `${BACKEND_URL}/report/${currentAnalysisId}`;
+            } catch (err) {
+                alert('Failed to save session for report generation.');
+            } finally {
+                exportBtn.disabled = false;
+                exportBtn.innerHTML = '<i class="fas fa-file-pdf"></i> PDF Report';
+            }
         } else {
-            alert('No active session found! Please upload and analyze a video first. To download reports for previous videos, scroll down to the Archives section and use the "Diet & Health PDF" buttons there.');
+            alert('No active session found! Please upload a video or start the webcam first.');
         }
     });
 
