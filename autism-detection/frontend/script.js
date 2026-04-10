@@ -43,7 +43,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- File Upload Logic ---
-    browseBtn.addEventListener('click', () => videoInput.click());
+    browseBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        videoInput.click();
+    });
     uploadArea.addEventListener('click', () => videoInput.click());
     videoInput.addEventListener('change', (e) => handleSelectedFile(e.target.files[0]));
 
